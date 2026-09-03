@@ -1,0 +1,47 @@
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import accuracy_score
+
+# Create mobile price dataset
+data = {
+    "RAM": [2, 3, 4, 4, 6, 6, 8, 8, 12, 12],
+    "Storage": [32, 32, 64, 128, 64, 128, 128, 256, 256, 512],
+    "Battery": [3000, 3500, 4000, 4500, 4000, 5000, 4500, 5000, 5000, 6000],
+    "Camera": [8, 12, 16, 20, 24, 32, 48, 50, 64, 108],
+    "Price_Range": [0, 0, 1, 1, 1, 2, 2, 2, 3, 3]
+}
+
+df = pd.DataFrame(data)
+
+# Input features
+X = df[["RAM", "Storage", "Battery", "Camera"]]
+
+# Target variable
+y = df["Price_Range"]
+
+# Split dataset
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42
+)
+
+# Create Random Forest model
+model = RandomForestClassifier(
+    n_estimators=100,
+    random_state=42
+)
+
+# Train the model
+model.fit(X_train, y_train)
+
+# Predict
+y_pred = model.predict(X_test)
+
+# Evaluate model
+accuracy = accuracy_score(y_test, y_pred)
+
+print("Mobile Price Prediction")
+print("-----------------------")
+print("Accuracy:", round(accuracy, 2))
+print("Actual Values:", list(y_test))
+print("Predicted Values:", list(y_pred))
