@@ -1,0 +1,44 @@
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.naive_bayes import GaussianNB
+from sklearn.metrics import accuracy_score
+
+# Create bank loan dataset
+data = {
+    "Age": [25, 35, 45, 28, 50, 40, 30, 55, 38, 48],
+    "Income": [25000, 45000, 70000, 30000, 80000, 60000, 35000, 90000, 50000, 75000],
+    "Loan_Amount": [100000, 200000, 300000, 120000, 400000, 250000, 150000, 500000, 220000, 350000],
+    "Credit_Score": [600, 700, 750, 620, 800, 720, 650, 820, 690, 780],
+    "Loan_Status": [0, 1, 1, 0, 1, 1, 0, 1, 0, 1]
+}
+
+df = pd.DataFrame(data)
+
+# Input features
+X = df[["Age", "Income", "Loan_Amount", "Credit_Score"]]
+
+# Target variable
+y = df["Loan_Status"]
+
+# Split dataset
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42
+)
+
+# Create Naive Bayes model
+model = GaussianNB()
+
+# Train model
+model.fit(X_train, y_train)
+
+# Predict
+y_pred = model.predict(X_test)
+
+# Calculate accuracy
+accuracy = accuracy_score(y_test, y_pred)
+
+print("Bank Loan Prediction using Naive Bayes")
+print("---------------------------------------")
+print("Accuracy:", round(accuracy, 2))
+print("Actual Values:", y_test.tolist())
+print("Predicted Values:", y_pred.tolist())
